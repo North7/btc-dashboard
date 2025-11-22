@@ -14,7 +14,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout source code
+      - name: Checkout source
         uses: actions/checkout@v4
 
       - name: Setup Node.js
@@ -29,7 +29,7 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: Upload dist as artifact
+      - name: Upload dist folder
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
@@ -38,4 +38,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     environment:
-      name: github-p
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
